@@ -10,6 +10,13 @@ import (
 	"github.com/nerolizm/portone-payment/internal/config"
 )
 
+const (
+	baseURL     = "https://api.iamport.kr"
+	tokenPath   = "/users/getToken"
+	paymentPath = "/payments/%s" // GET /payments/{imp_uid}
+	cancelPath  = "/payments/cancel"
+)
+
 type Client struct {
 	client *http.Client
 }
@@ -21,8 +28,6 @@ func NewClient() *Client {
 }
 
 func (c *Client) GetAccessToken() ([]byte, error) {
-	tokenURL := fmt.Sprintf("%s/users/getToken", config.Env.BaseURL)
-
 	requestBody := map[string]string{
 		"imp_key":    config.Env.ImpKey,
 		"imp_secret": config.Env.ImpSecret,
@@ -33,7 +38,7 @@ func (c *Client) GetAccessToken() ([]byte, error) {
 		return nil, err
 	}
 
-	resp, err := c.client.Post(tokenURL, "application/json", bytes.NewBuffer(jsonBody))
+	resp, err := c.client.Post(baseURL+tokenPath, "application/json", bytes.NewBuffer(jsonBody))
 	if err != nil {
 		return nil, err
 	}
@@ -43,7 +48,7 @@ func (c *Client) GetAccessToken() ([]byte, error) {
 }
 
 func (c *Client) GetPaymentStatus(impUid, accessToken string) ([]byte, error) {
-	paymentURL := fmt.Sprintf("%s/payments/%s", config.Env.BaseURL, impUid)
+	paymentURL := fmt.Sprintf(baseURL+paymentPath, impUid)
 
 	req, err := http.NewRequest("GET", paymentURL, nil)
 	if err != nil {
@@ -62,8 +67,6 @@ func (c *Client) GetPaymentStatus(impUid, accessToken string) ([]byte, error) {
 }
 
 func (c *Client) RequestCancelPayment(impUid, token string) ([]byte, error) {
-	cancelURL := fmt.Sprintf("%s/payments/cancel", config.Env.BaseURL)
-
 	cancelBody := map[string]string{
 		"imp_uid": impUid,
 	}
@@ -73,7 +76,7 @@ func (c *Client) RequestCancelPayment(impUid, token string) ([]byte, error) {
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", cancelURL, bytes.NewBuffer(jsonBody))
+	req, err := http.NewRequest("POST", baseURL+cancelPath, bytes.NewBuffer(jsonBody))
 	if err != nil {
 		return nil, err
 	}

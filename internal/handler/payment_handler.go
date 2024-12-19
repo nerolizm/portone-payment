@@ -43,10 +43,8 @@ func (h *PaymentHandler) HandlePaymentCancel(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	// response가 이미 JSON 형식이므로 Content-Type을 application/json으로 설정
 	w.Header().Set("Content-Type", "application/json")
 
-	// response를 그대로 클라이언트에 전달
 	if _, err := w.Write(response); err != nil {
 		http.Error(w, "Failed to write response", http.StatusInternalServerError)
 		return
