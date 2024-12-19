@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>포트원 결제 테스트</title>
+    <!-- 포트원 SDK -->
+    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+</head>
+<body>
+    <div class="payment-form">
+        <div class="input-group">
+            <label for="merchant_uid">주문번호:</label>
+            <input type="text" id="merchant_uid" placeholder="주문번호를 입력하세요">
+        </div>
+
+        <div class="input-group">
+            <label for="name">상품명:</label>
+            <input type="text" id="name" placeholder="상품명을 입력하세요">
+        </div>
+
+        <div class="input-group">
+            <label for="amount">결제금액:</label>
+            <input type="number" id="amount" placeholder="결제금액을 입력하세요">
+        </div>
+
+        <button onclick="requestPay()">결제하기</button>
+    </div>
+
+    <style>
+        .payment-form {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+
+    <script>
+        // SDK 초기화
+        IMP.init("imp21213574");
+
+        function requestPay() {
+            const merchantUid = document.getElementById('merchant_uid').value;
+            const name = document.getElementById('name').value;
+            const amount = Number(document.getElementById('amount').value);
+
+            // 입력값 검증
+            if (!merchantUid || !name || !amount) {
+                alert('모든 필드를 입력해주세요.');
+                return;
+            }
+
+            IMP.request_pay({
+                // 결제 파라미터
+                channelKey: "channel-key-2a0d7be0-20a2-41a9-ab78-292d7d3a9a55",
+                pay_method: "card",           // 결제수단은 신용카드로 고정
+                merchant_uid: merchantUid,    // 주문번호
+                name: name,                   // 상품명
+                amount: amount,               // 결제금액
+                buyer_email: "test@test.com", // 구매자 이메일
+                buyer_name: "구매자이름",      // 구매자 이름
+                buyer_tel: "010-0000-0000",   // 구매자 전화번호
+            }, function(response) {
+                // 결제 콜백
+                if (response.success) {
+                    // 결제 성공 시
+                    alert("결제가 성공적으로 처리되었습니다");
+                } else {
+                    // 결제 실패 시
+                    alert(`결제에 실패하였습니다.\n내용 : ${response.error_msg}`);
+                }
+            });
+        }
+    </script>
+</body>
+</html> 
