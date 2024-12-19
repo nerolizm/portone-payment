@@ -8,7 +8,6 @@ import (
 
 type Environment struct {
 	Port      string `env:"PORT,default=:8080"`
-	BaseURL   string `env:"BASE_URL,default=https://api.iamport.kr"`
 	ImpKey    string `env:"IMP_KEY,required=true"`
 	ImpSecret string `env:"IMP_SECRET,required=true"`
 }
