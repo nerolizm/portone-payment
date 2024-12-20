@@ -9,6 +9,7 @@ import (
 
 	"github.com/nerolizm/portone-payment/internal/config"
 	"github.com/nerolizm/portone-payment/internal/handler"
+	v1 "github.com/nerolizm/portone-payment/internal/infrastructure/http/v1"
 	"github.com/nerolizm/portone-payment/internal/service"
 	"github.com/rs/zerolog/log"
 )
@@ -41,7 +42,8 @@ func main() {
 	mux := http.NewServeMux()
 
 	// 서비스와 핸들러 초기화
-	paymentService := service.NewPaymentService()
+	client := v1.NewClient()
+	paymentService := service.NewPaymentService(client)
 	paymentHandler := handler.NewPaymentHandler(paymentService)
 
 	// 라우팅 설정

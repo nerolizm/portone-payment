@@ -5,10 +5,21 @@ import "encoding/json"
 type PaymentStatus string
 
 const (
-	PaymentStatusReady  PaymentStatus = "ready"  // 브라우저 창 이탈, 가상계좌 발급 완료 등 미결제 상태
-	PaymentStatusPaid   PaymentStatus = "paid"   // 결제완료
-	PaymentStatusFailed PaymentStatus = "failed" // 신용카드 한도 초과, 체크카드 잔액 부족, 브라우저 창 종료 또는 취소 버튼 클릭 등 결제실패 상태
+	PaymentStatusReady     PaymentStatus = "ready"     // 브라우저 창 이탈, 가상계좌 발급 완료 등 미결제 상태
+	PaymentStatusPaid      PaymentStatus = "paid"      // 결제완료
+	PaymentStatusFailed    PaymentStatus = "failed"    // 신용카드 한도 초과, 체크카드 잔액 부족, 브라우저 창 종료 또는 취소 버튼 클릭 등 결제실패 상태
+	PaymentStatusCancelled PaymentStatus = "cancelled" // 결제 취소
 )
+
+// IsValid 결제 상태값이 유효한지 검증
+func (p PaymentStatus) IsValid() bool {
+	switch p {
+	case PaymentStatusReady, PaymentStatusPaid, PaymentStatusFailed, PaymentStatusCancelled:
+		return true
+	default:
+		return false
+	}
+}
 
 type Response struct {
 	Code     int             `json:"code,omitempty"`
