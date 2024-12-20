@@ -28,3 +28,5 @@ go.work.sum
 .envrc
 
 .idea/
+
+coverage.out

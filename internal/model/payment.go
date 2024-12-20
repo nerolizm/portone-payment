@@ -11,7 +11,6 @@ const (
 	PaymentStatusCancelled PaymentStatus = "cancelled" // 결제 취소
 )
 
-// IsValid 결제 상태값이 유효한지 검증
 func (p PaymentStatus) IsValid() bool {
 	switch p {
 	case PaymentStatusReady, PaymentStatusPaid, PaymentStatusFailed, PaymentStatusCancelled:
@@ -27,19 +26,19 @@ type Response struct {
 	Response json.RawMessage `json:"response,omitempty"`
 }
 
-// 결제내역 단건조회 API 응답 데이터
+// PaymentData 결제내역 단건조회 API 응답 데이터
 // https://developers.portone.io/api/rest-v1/payment?v=v1#get%20%2Fpayments%2F%7Bimp_uid%7D
 type PaymentData struct {
 	Status PaymentStatus `json:"status"`
 }
 
-// 토큰 발급 API 응답 데이터
+// TokenData 토큰 발급 API 응답 데이터
 // https://developers.portone.io/api/rest-v1/auth?v=v1#post%20%2Fusers%2FgetToken
 type TokenData struct {
 	AccessToken string `json:"access_token"`
 }
 
-// 결제 취소 API 요청 데이터
+// CancelRequest 결제 취소 API 요청 데이터
 // https://developers.portone.io/api/rest-v1/payment?v=v1#post%20%2Fpayments%2Fcancel
 type CancelRequest struct {
 	ImpUid string `json:"imp_uid"`

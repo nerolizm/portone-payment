@@ -1,4 +1,4 @@
-package http
+package _http
 
 func NewHTTPError(statusCode int, message string) *HTTPError {
 	return &HTTPError{

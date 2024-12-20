@@ -103,12 +103,10 @@ func TestPaymentHandler_HandlePaymentCancel(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			// Setup
 			mockService := new(MockPaymentService)
 			tt.setupMock(mockService)
 			handler := NewPaymentHandler(mockService)
 
-			// Create request
 			reqBody := model.CancelRequest{
 				ImpUid: tt.impUid,
 			}
@@ -119,10 +117,8 @@ func TestPaymentHandler_HandlePaymentCancel(t *testing.T) {
 			req.Header.Set("Content-Type", "application/json")
 			w := httptest.NewRecorder()
 
-			// Execute
 			handler.HandlePaymentCancel(w, req)
 
-			// Assert status code
 			assert.Equal(t, tt.wantStatus, w.Code)
 
 			if tt.wantError {
@@ -143,7 +139,6 @@ func TestPaymentHandler_HandlePaymentCancel(t *testing.T) {
 				assert.Equal(t, tt.wantCode, response.Code)
 			}
 
-			// Verify all mocked calls were made
 			mockService.AssertExpectations(t)
 		})
 	}

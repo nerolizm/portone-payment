@@ -46,9 +46,6 @@ func (c *Client) GetAccessToken() ([]byte, error) {
 		return nil, err
 	}
 
-	// resp 로깅
-	fmt.Println("requestBody", string(jsonBody))
-
 	resp, err := c.client.Post(c.baseURL+tokenPath, "application/json", bytes.NewBuffer(jsonBody))
 	if err != nil {
 		return nil, err
