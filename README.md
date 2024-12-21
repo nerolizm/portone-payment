@@ -39,6 +39,8 @@ IMP_SECRET=your_imp_secret
 │   ├── infrastructure/ # 외부 서비스 연동
 │   ├── model/          # 도메인 모델
 │   └── service/        # 비즈니스 로직
+├── scripts/            # 스크립트 파일
+├── static/             # 정적 파일
 ├── test/
 │   └── integration/    # 통합 테스트
 └── Makefile            # 빌드 및 개발 도구
