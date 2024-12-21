@@ -1,0 +1,93 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Portone Payment API",
+    "description": "포트원 결제 관련 API",
+    "version": "1.0.0",
+    "contact": {
+      "email": "nerolizm@gmail.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "로컬 개발 서버"
+    }
+  ],
+  "paths": {
+    "/cancel-payment": {
+      "post": {
+        "summary": "결제 취소",
+        "description": "포트원 결제 취소 API",
+        "tags": ["Payment"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CancelRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "성공적으로 결제가 취소됨",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                },
+                "example": {
+                  "code": 0,
+                  "message": "success",
+                  "response": {
+                    "status": "cancelled"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CancelRequest": {
+        "type": "object",
+        "required": ["imp_uid"],
+        "properties": {
+          "imp_uid": {
+            "type": "string",
+            "description": "포트원 결제 고유번호",
+            "example": "imp_123456789"
+          }
+        }
+      },
+      "SuccessResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "응답 코드"
+          },
+          "message": {
+            "type": "string",
+            "description": "응답 메시지"
+          },
+          "response": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "enum": ["ready", "paid", "failed", "cancelled"],
+                "description": "결제 상태"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+} 

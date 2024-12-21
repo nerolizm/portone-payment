@@ -7,6 +7,7 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/go-openapi/runtime/middleware"
 	"github.com/nerolizm/portone-payment/internal/config"
 	"github.com/nerolizm/portone-payment/internal/handler"
 	v1 "github.com/nerolizm/portone-payment/internal/infrastructure/http/v1"
@@ -46,7 +47,17 @@ func main() {
 	paymentService := service.NewPaymentService(client)
 	paymentHandler := handler.NewPaymentHandler(paymentService)
 
-	// 라우팅 설정
+	// Swagger UI 설정
+	opts := middleware.SwaggerUIOpts{
+		BasePath: "/",
+		SpecURL:  "/openapi.json",
+		Path:     "/swagger",
+	}
+	sh := middleware.SwaggerUI(opts, nil)
+	mux.Handle("/swagger", sh)
+	mux.Handle("/openapi.json", http.FileServer(http.Dir("api")))
+
+	// API 라우팅 설정
 	fs := http.FileServer(http.Dir("static"))
 	mux.Handle("/", fs)
 	mux.HandleFunc("/cancel-payment", paymentHandler.HandlePaymentCancel)

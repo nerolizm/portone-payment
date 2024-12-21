@@ -1,20 +1,21 @@
 # Portone Payment Service
 
-## 필수 조건
+## 기술스택
 
-- Go 1.21 이상
-- Make
-
-또는
-
-- Docker
-- Docker Compose
+- go 1.21 이상
+- make
+- docker, docker-compose
+- OpenAPI (swagger)
 
 ## 설치
-
+### 의존성 설치
 ```bash
-# 의존성 설치
-go mod download
+make dependencies
+```
+
+### 요구사항 체크
+```bash
+make check-all
 ```
 
 ## 환경 설정
@@ -30,16 +31,17 @@ IMP_SECRET=your_imp_secret
 ## 프로젝트 구조
 ```
 .
+├── api/                # OpenAPI Spec
 ├── cmd/                # 애플리케이션 진입점
 ├── internal/
-│   ├── config/        # 환경 설정
-│   ├── handler/       # HTTP 핸들러
-│   ├── infrastructure/# 외부 서비스 연동
-│   ├── model/         # 도메인 모델
-│   └── service/       # 비즈니스 로직
+│   ├── config/         # 환경 설정
+│   ├── handler/        # HTTP 핸들러
+│   ├── infrastructure/ # 외부 서비스 연동
+│   ├── model/          # 도메인 모델
+│   └── service/        # 비즈니스 로직
 ├── test/
-│   └── integration/   # 통합 테스트
-└── Makefile           # 빌드 및 개발 도구
+│   └── integration/    # 통합 테스트
+└── Makefile            # 빌드 및 개발 도구
 ```
 
 ## 실행
@@ -63,7 +65,21 @@ docker-compose down -v --rmi local --remove-orphans
 
 > 기본적으로 `:8080` 포트로 동작하기 때문에 http://localhost:8080로 접속 가능합니다.
 
+## 테스트
+```bash
+make test
+```
+
 ## API 문서
+
+API 문서는 OpenAPI(Swagger) 스펙으로 작성되어 있습니다.
+
+Spec Path: `/api/openapi.json`
+
+URL Path:
+```
+http://localhost:8080/swagger
+```
 
 ### 결제 취소
 ```http
