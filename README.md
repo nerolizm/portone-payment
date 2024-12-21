@@ -15,7 +15,7 @@ make dependencies
 
 ### 요구사항 체크
 ```bash
-make check-all
+make check
 ```
 
 ## 환경 설정
@@ -51,6 +51,10 @@ IMP_SECRET=your_imp_secret
 아래의 명령어를 실행하면 코드 검사, 테스트, 실행까지 순서대로 진행됩니다.
 ```bash
 make all
+```
+단순 실행 시,
+```bash
+make run
 ```
 *명령어에 대해 추가로 확인하고 싶으실 경우 `make help`를 입력하시면 됩니다.*
 
